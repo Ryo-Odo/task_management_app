@@ -32,6 +32,23 @@ RSpec.describe 'タスク管理機能', type: :system do
         # expectの結果が true ならテスト成功、false なら失敗として結果が
       end
     end
+    # テスト内容を追加で記載する
+    context 'タスクが作成日時の降順に並んでいる場合' do
+      it '新しいタスクが一番上に表示される' do
+        # ここに実装する\
+        task = FactoryBot.create(:task)
+        sleep 2
+        task = FactoryBot.create(:second_task)
+        visit tasks_path
+        task_list_1 = all('tr')[1].all('td')
+        task_list_2 = all('tr')[2].all('td')
+
+        expect(task_list_1[0]).to have_content 'test_task_name_2'
+        expect(task_list_1[1]).to have_content 'test_content_2'
+        expect(task_list_2[0]).to have_content 'test_task_name'
+        expect(task_list_2[1]).to have_content 'test_content'
+      end
+    end
   end
   describe '詳細表示機能' do
     context '任意のタスク詳細画面に遷移した場合' do
