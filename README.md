@@ -14,4 +14,4 @@
     * Lavel
 
 # デプロイ方法
-    * git push heroku 編集したブランチ名:master
+    * gitと連携済みのため、gitのmasterが更新されると自動でデプロイされる
