@@ -49,6 +49,22 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(task_list_2[1]).to have_content 'test_content'
       end
     end
+
+    context 'タスクが終了期限の降順に並んでいる場合' do
+      it '終了期限が遠いタスクが一番上に表示される' do
+        task = FactoryBot.create(:task)
+        sleep 2
+        task = FactoryBot.create(:second_task)
+
+        visit tasks_path(sort_expired: "true")
+        task_list_1 = all('tr')[1].all('td')
+        task_list_2 = all('tr')[2].all('td')
+
+        expect(task_list_1[2]).to have_content '2022年12月22日'
+        expect(task_list_2[2]).to have_content '2021年11月11日'
+
+      end
+    end
   end
   describe '詳細表示機能' do
     context '任意のタスク詳細画面に遷移した場合' do

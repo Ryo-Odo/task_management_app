@@ -2,7 +2,11 @@ class TasksController < ApplicationController
   before_action :set_property, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tasks = Task.all.order(created_at: "DESC")
+    if params[:sort_expired]
+      @tasks = Task.all.order(deadline: "DESC")
+    else
+      @tasks = Task.all.order(created_at: "DESC")
+    end
   end
 
   def new
@@ -14,7 +18,7 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to task_path(@task.id), notice: "登録しました！"
     else
-      render :new
+      render :new, notice: "登録に失敗しました"
     end
   end
 
@@ -43,6 +47,6 @@ class TasksController < ApplicationController
   end
 
   def tasks_params
-    params.require(:task).permit(:task_name, :content)
+    params.require(:task).permit(:task_name, :content, :deadline)
   end
 end
