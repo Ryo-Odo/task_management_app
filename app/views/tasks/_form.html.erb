@@ -16,5 +16,7 @@
   <%= f.text_area :content %> <br>
   <%= f.label :deadline, t('view.deadline') %> <br>
   <%= f.date_select  :deadline %> <br>
+  <%= f.label :status, t('view.status') %> <br>
+  <%= f.select :status, ["未着手", "着手中", "完了"] %> <br>
   <%= f.submit "登録する" %>
 <% end %>
