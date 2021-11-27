@@ -9,13 +9,21 @@ RSpec.describe 'タスク管理機能', type: :system do
         # 2. 新規登録内容を入力する
         #「タスク名」というラベル名の入力欄と、「タスク詳細」というラベル名の入力欄にタスクのタイトルと内容をそれぞれ入力する
         fill_in "タスク名", with: 'test_task'
-        fill_in "内容", with: 'test_content'
+        fill_in "詳しい内容", with: 'test_content'
+        select '2021', from:'task_deadline_1i'
+        select '10月', from:'task_deadline_2i'
+        select '10', from:'task_deadline_3i'
+        select '未着手', from:'task_status'
+        select '低', from:'task_priority'
         # 3. 「登録する」というvalue（表記文字）のあるボタンをクリックする
         click_on "登録する"
         # 4. clickで登録されたはずの情報が、タスク詳細ページに表示されているかを確認する
         # （タスクが登録されたらタスク詳細画面に遷移されるという前提）
         expect(page).to have_content 'test_task'
         expect(page).to have_content 'test_content'
+        expect(page).to have_content '2021-10-10'
+        expect(page).to have_content '未着手'
+        expect(page).to have_content '低'
       end
     end
   end
@@ -55,16 +63,27 @@ RSpec.describe 'タスク管理機能', type: :system do
         task = FactoryBot.create(:task)
         sleep 2
         task = FactoryBot.create(:second_task)
-
-        visit tasks_path(sort_expired: "true")
+        visit tasks_path(sort_deadline: "true")
         task_list_1 = all('tr')[1].all('td')
         task_list_2 = all('tr')[2].all('td')
-
-        expect(task_list_1[2]).to have_content '2022年12月22日'
-        expect(task_list_2[2]).to have_content '2021年11月11日'
-
+        expect(task_list_1[2]).to have_content '2022-12-22'
+        expect(task_list_2[2]).to have_content '2021-11-11'
       end
     end
+
+    context 'タスクがステータスの降順に並んでいる場合' do
+      it 'ステータスが高いタスクが一番上に表示される' do
+        task = FactoryBot.create(:task)
+        sleep 2
+        task = FactoryBot.create(:second_task)
+        visit tasks_path(sort_priority: "true")
+        task_list_1 = all('tr')[1].all('td')
+        task_list_2 = all('tr')[2].all('td')
+        expect(task_list_1[4]).to have_content '高'
+        expect(task_list_2[4]).to have_content '低'
+      end
+    end
+
   end
   describe '詳細表示機能' do
     context '任意のタスク詳細画面に遷移した場合' do
