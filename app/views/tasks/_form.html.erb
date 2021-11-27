@@ -18,5 +18,7 @@
   <%= f.date_select  :deadline %> <br>
   <%= f.label :status, t('view.status') %> <br>
   <%= f.select :status, ["未着手", "着手中", "完了"] %> <br>
+  <%= f.label :priority, t('view.priority') %> <br>
+  <%= f.select :priority, ["低", "中", "高"] %> <br>
   <%= f.submit "登録する" %>
 <% end %>

@@ -9,7 +9,8 @@
   <%= f.submit "検索" %> <br>
 <% end %>
 
-<p><%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %></p>
+<p><%= link_to "終了期限でソートする", tasks_path(sort_deadline: "true") %></p>
+<p><%= link_to "優先度でソートする", tasks_path(sort_priority: "true") %></p>
 
 <p><%= link_to "ソートを解除する", tasks_path %></p>
 <p><%= link_to '物件を登録する', new_task_path %></p>
@@ -19,16 +20,18 @@
     <th>詳しい内容</th>
     <th>終了期限</th>
     <th>ステータス</th>
+    <th>優先度</th>
   </tr>
 <% @tasks.each do |task| %>
   <tr>
     <td ><%= task.task_name %></td>
     <td ><%= task.content %></td>
-    <td> <%= format("%04d年%02d月%02d日", task.deadline.year, task.deadline.month, task.deadline.day) %> </td>
-　　<td> <%= task.status %> </td>
-    <td><%= link_to '詳細', task_path(task.id) %></td>
-    <td><%= link_to "編集", edit_task_path(task.id) %></td>
-    <td><%= link_to '削除', task_path(task.id), method: :delete, data: { confirm: '本当に削除していいですか？' } %>
+    <td> <%= format("%04d-%02d-%02d", task.deadline.year, task.deadline.month, task.deadline.day) %> </td>
+    <td> <%= task.status %> </td>
+    <td> <%= task.priority %> </td>
+  <td><%= link_to '詳細', task_path(task.id) %></td>
+  <td><%= link_to "編集", edit_task_path(task.id) %></td>
+  <td><%= link_to '削除', task_path(task.id), method: :delete, data: { confirm: '本当に削除していいですか？' } %>
   </tr>
 <% end %>
 </table>
