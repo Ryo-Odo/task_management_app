@@ -10,9 +10,9 @@
 <% end %>
 
 <%= form_with( model: @task, local: true ) do |f| %>
-  <%= f.label :task_name, "タスク名" %> <br>
+  <%= f.label :task_name, t('view.task_name') %> <br>
   <%= f.text_field :task_name %> <br>
-  <%= f.label :content, "詳しい内容" %> <br>
+  <%= f.label :content, t('view.content') %> <br>
   <%= f.text_area :content %> <br>
   <%= f.submit "登録する" %>
 <% end %>
