@@ -5,6 +5,9 @@ ja:
     user: ユーザー
     task_name: タスク名
     content: 詳しい内容
+    deadline: 終了期限
+    status: ステータス
+    priority: 優先度
     title: タイトル
     name: 名前
     email: メールアドレス
