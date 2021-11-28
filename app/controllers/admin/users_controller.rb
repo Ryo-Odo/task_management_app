@@ -1,7 +1,8 @@
 class Admin::UsersController < ApplicationController
+  before_action :authority_login_required
   before_action :set_property, only: [:show, :edit, :update, :destroy]
-  skip_before_action :login_required, only: [:new, :create, :index, :show, :edit, :update, :destroy]
   def index
+    p current_user.authority
     @users = User.select(:id, :name, :email, :authority)
   end
 
@@ -34,8 +35,11 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-    redirect_to admin_users_path, notice:"削除しました"
+    if @user.destroy
+      redirect_to admin_users_path, notice:"削除しました"
+    else
+      redirect_to admin_users_path, notice:"管理ユーザーは最低１名必要です"
+    end
   end
 
   private
@@ -45,5 +49,9 @@ class Admin::UsersController < ApplicationController
 
   def admin_user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :authority)
+  end
+
+  def authority_login_required
+    redirect_to tasks_path, notice:"管理ユーザーでアクセスして下さい" unless current_user.authority
   end
 end

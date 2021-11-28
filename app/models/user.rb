@@ -6,4 +6,9 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6 }, on: :create
   has_secure_password
   has_many :tasks, dependent: :destroy
+  before_destroy :destroy_restrict
+
+  def destroy_restrict
+    throw :abort if self.authority && User.where(authority: true).count == 1
+  end
 end
