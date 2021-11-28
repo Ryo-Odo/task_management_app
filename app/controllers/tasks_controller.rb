@@ -16,7 +16,7 @@ class TasksController < ApplicationController
     else
       @tasks = @tasks.order(created_at: "DESC")
     end
-    
+
     @tasks = @tasks.page(params[:page]).per(5)
 
   end
@@ -26,7 +26,6 @@ class TasksController < ApplicationController
   end
 
   def create
-    p params
     @task = current_user.tasks.build(tasks_params)
     if @task.save
       redirect_to task_path(@task.id), notice: "登録しました！"
