@@ -1,7 +1,8 @@
 class Admin::UsersController < ApplicationController
-  skip_before_action :login_required, only: [:new, :create, :index]
+  before_action :set_property, only: [:show, :edit, :update, :destroy]
+  skip_before_action :login_required, only: [:new, :create, :index, :show, :edit, :update, :destroy]
   def index
-    @users = User.all
+    @users = User.select(:id, :name, :email, :authority)
   end
 
   def new
@@ -18,22 +19,31 @@ class Admin::UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
   end
 
   def edit
-    @user = User.find(params[:id])
   end
 
 
   def update
+    if @user.update(admin_user_params)
+      redirect_to admin_users_path, notice: "編集しました！"
+    else
+      render :edit
+    end
   end
 
   def destroy
+    @user.destroy
+    redirect_to admin_users_path, notice:"削除しました"
   end
 
   private
+  def set_property
+    @user = User.find(params[:id])
+  end
+
   def admin_user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :authority)
   end
 end
