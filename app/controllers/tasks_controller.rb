@@ -11,21 +11,12 @@ class TasksController < ApplicationController
 
     if params[:sort_deadline]
       @tasks = @tasks.order(deadline: "DESC")
-    else
-      @tasks = @tasks.order(created_at: "DESC")
-    end
-
-    if params[:sort_priority]
-      p "----------------------------"
-      p @tasks
-      p "----------------------------"
+    elsif params[:sort_priority]
       @tasks = @tasks.order(priority: "DESC")
-      p "----------------------------"
-      p @tasks
-      p "----------------------------"
     else
       @tasks = @tasks.order(created_at: "DESC")
     end
+    
     @tasks = @tasks.page(params[:page]).per(5)
 
   end
