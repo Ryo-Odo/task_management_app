@@ -16,16 +16,18 @@
 <p><%= link_to '物件を登録する', new_task_path %></p>
 <table class="container">
   <tr class="row">
-    <th class="col-md-3">タスク名</th>
-    <th class="col-md-3">詳しい内容</th>
+    <th class="col-md-2">ユーザー名</th>
+    <th class="col-md-2">タスク名</th>
+    <th class="col-md-2">詳しい内容</th>
     <th class="col-md-2">終了期限</th>
     <th class="col-md-1">ステータス</th>
     <th class="col-md-1">優先度</th>
   </tr>
 <% @tasks.each do |task| %>
   <tr class="row">
-  <td class="col-md-3"><%= task.task_name %></td>
-  <td class="col-md-3"><%= task.content %></td>
+  <td class="col-md-2"><%= task.user.name %></td>
+  <td class="col-md-2"><%= task.task_name %></td>
+  <td class="col-md-2"><%= task.content %></td>
   <td class="col-md-2"> <%= format("%04d-%02d-%02d", task.deadline.year, task.deadline.month, task.deadline.day) %> </td>
   <td class="col-md-1"> <%= task.status %> </td>
   <td class="col-md-1"> <%= task.priority %> </td>
