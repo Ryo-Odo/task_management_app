@@ -18,5 +18,5 @@ class Task < ApplicationRecord
     where(status: search_status)
     .order(created_at: "DESC")
   }
-
+  belongs_to :user
 end

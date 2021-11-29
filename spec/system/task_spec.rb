@@ -1,10 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe 'タスク管理機能', type: :system do
+  before do
+    @user_1 = FactoryBot.create(:user)
+    @user_2 = FactoryBot.create(:second_user)
+  end
   describe '新規作成機能' do
+    before do
+      visit new_session_path
+      fill_in 'Email', with:'user_1@email.com'
+      fill_in 'Password', with:'111111'
+      click_button 'Log in'
+    end
     context 'タスクを新規作成した場合' do
       it '作成したタスクが表示される' do
-        # 1. new_task_pathに遷移する（新規作成ページに遷移する）
         visit new_task_path
         # 2. 新規登録内容を入力する
         #「タスク名」というラベル名の入力欄と、「タスク詳細」というラベル名の入力欄にタスクのタイトルと内容をそれぞれ入力する
@@ -27,7 +36,14 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
+
   describe '一覧表示機能' do
+    before do
+      visit new_session_path
+      fill_in 'Email', with:'user_1@email.com'
+      fill_in 'Password', with:'111111'
+      click_button 'Log in'
+    end
     context '一覧画面に遷移した場合' do
       it '作成済みのタスク一覧が表示される' do
         # テストで使用するためのタスクを作成
@@ -44,48 +60,53 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'タスクが作成日時の降順に並んでいる場合' do
       it '新しいタスクが一番上に表示される' do
         # ここに実装する\
-        task = FactoryBot.create(:task)
+        FactoryBot.create(:task)
         sleep 2
-        task = FactoryBot.create(:second_task)
+        FactoryBot.create(:second_task)
         visit tasks_path
         task_list_1 = all('tr')[1].all('td')
         task_list_2 = all('tr')[2].all('td')
-
-        expect(task_list_1[0]).to have_content 'test_task_name_2'
-        expect(task_list_1[1]).to have_content 'test_content_2'
-        expect(task_list_2[0]).to have_content 'test_task_name'
-        expect(task_list_2[1]).to have_content 'test_content'
+        expect(task_list_1[1]).to have_content 'test_task_name_2'
+        expect(task_list_1[2]).to have_content 'test_content_2'
+        expect(task_list_2[1]).to have_content 'test_task_name'
+        expect(task_list_2[2]).to have_content 'test_content'
       end
     end
 
     context 'タスクが終了期限の降順に並んでいる場合' do
       it '終了期限が遠いタスクが一番上に表示される' do
-        task = FactoryBot.create(:task)
+        FactoryBot.create(:task)
         sleep 2
-        task = FactoryBot.create(:second_task)
+        FactoryBot.create(:second_task)
         visit tasks_path(sort_deadline: "true")
         task_list_1 = all('tr')[1].all('td')
         task_list_2 = all('tr')[2].all('td')
-        expect(task_list_1[2]).to have_content '2022-12-22'
-        expect(task_list_2[2]).to have_content '2021-11-11'
+        expect(task_list_1[3]).to have_content '2022-12-22'
+        expect(task_list_2[3]).to have_content '2021-11-11'
       end
     end
 
     context 'タスクがステータスの降順に並んでいる場合' do
       it 'ステータスが高いタスクが一番上に表示される' do
-        task = FactoryBot.create(:task)
+        FactoryBot.create(:task)
         sleep 2
-        task = FactoryBot.create(:second_task)
+        FactoryBot.create(:second_task)
         visit tasks_path(sort_priority: "true")
         task_list_1 = all('tr')[1].all('td')
         task_list_2 = all('tr')[2].all('td')
-        expect(task_list_1[4]).to have_content '高'
-        expect(task_list_2[4]).to have_content '低'
+        expect(task_list_1[5]).to have_content '高'
+        expect(task_list_2[5]).to have_content '低'
       end
     end
 
   end
   describe '詳細表示機能' do
+    before do
+      visit new_session_path
+      fill_in 'Email', with:'user_1@email.com'
+      fill_in 'Password', with:'111111'
+      click_button 'Log in'
+    end
     context '任意のタスク詳細画面に遷移した場合' do
       it '該当タスクの内容が表示される' do
         task = FactoryBot.create(:task)
@@ -95,4 +116,5 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
+  User.destroy_all
 end
