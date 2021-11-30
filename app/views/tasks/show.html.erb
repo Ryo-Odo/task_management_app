@@ -4,7 +4,7 @@
 <p>詳しい内容: <%= @task.content %></p>
 <p>終了期限: <%= format("%04d-%02d-%02d", @task.deadline.year, @task.deadline.month, @task.deadline.day) %></p>
 <p>ステータス: <%= @task.status %></p>
-<p>優先度: <%= @task.priority %></p>\
+<p>優先度: <%= @task.priority %></p>
 <p>ラベル</p>
 <div>
   <% @task.labels.each do |label|%>
