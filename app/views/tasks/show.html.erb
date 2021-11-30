@@ -4,6 +4,12 @@
 <p>詳しい内容: <%= @task.content %></p>
 <p>終了期限: <%= format("%04d-%02d-%02d", @task.deadline.year, @task.deadline.month, @task.deadline.day) %></p>
 <p>ステータス: <%= @task.status %></p>
-<p>優先度: <%= @task.priority %></p>
+<p>優先度: <%= @task.priority %></p>\
+<p>ラベル</p>
+<div>
+  <% @task.labels.each do |label|%>
+    <p><%= label.label_name %></p>
+  <% end %>
+</div>
 <p><%= link_to "編集する", edit_task_path(@task.id) %></p>
 <p><%= link_to "一覧画面に戻る", tasks_path %></p>
