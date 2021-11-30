@@ -10,7 +10,6 @@ class TasksController < ApplicationController
       @tasks = @tasks.joins(:labels).where(labels: {id: params[:search][:label_id]}) if params[:search][:label_id].present?
     end
 
-
     if params[:sort_deadline]
       @tasks = @tasks.order(deadline: "DESC")
     elsif params[:sort_priority]
