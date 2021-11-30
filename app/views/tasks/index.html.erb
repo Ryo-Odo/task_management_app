@@ -6,6 +6,8 @@
   <%= f.text_field :task_name %> <br>
   <%= f.label :status, t('view.status') %>
   <%= f.select :status, ["未着手", "着手中", "完了"], include_blank: "" %>
+  <%= f.label :label, t('view.label') %>
+  <%= f.select :label_id, Label.all.collect { |l| [ l.label_name, l.id ] }, include_blank: true %>
   <%= f.submit "検索" %> <br>
 <% end %>
 
@@ -22,7 +24,9 @@
     <th class="col-md-2">終了期限</th>
     <th class="col-md-1">ステータス</th>
     <th class="col-md-1">優先度</th>
+    <th class="col-md-1">ラベル</th>
   </tr>
+
 <% @tasks.each do |task| %>
   <tr class="row">
   <td class="col-md-2"><%= task.user.name %></td>
@@ -31,10 +35,16 @@
   <td class="col-md-2"> <%= format("%04d-%02d-%02d", task.deadline.year, task.deadline.month, task.deadline.day) %> </td>
   <td class="col-md-1"> <%= task.status %> </td>
   <td class="col-md-1"> <%= task.priority %> </td>
+  <td class="col-md-1">
+    <% task.labels.each do |label|%>
+      <p><%= label.label_name %></p>
+    <% end %>
+  </td>
   <td><%= link_to '詳細', task_path(task.id) %></td>
   <td><%= link_to "編集", edit_task_path(task.id) %></td>
   <td><%= link_to '削除', task_path(task.id), method: :delete, data: { confirm: '本当に削除していいですか？' } %></td>
   </tr>
 <% end %>
 </table>
+
 <%= paginate @tasks %>

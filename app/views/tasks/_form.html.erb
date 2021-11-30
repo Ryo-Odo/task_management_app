@@ -20,5 +20,7 @@
   <%= f.select :status, ["未着手", "着手中", "完了"] %> <br>
   <%= f.label :priority, t('view.priority') %> <br>
   <%= f.select :priority, ["低", "中", "高"] %> <br>
+  <%= f.label :label_ids, t('view.label') %> <br>
+  <%= f.collection_check_boxes(:label_ids, Label.all, :id, :label_name) %>
   <%= f.submit "登録する" %>
 <% end %>
