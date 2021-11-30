@@ -14,6 +14,7 @@ ja:
     current_password: 現在のパスワード
     password: パスワード
     password_confirmation: 確認用パスワード
+    label: ラベル
     remember_me: ログインを記憶
   activerecord:
     errors:

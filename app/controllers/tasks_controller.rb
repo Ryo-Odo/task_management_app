@@ -7,7 +7,9 @@ class TasksController < ApplicationController
       @tasks = Task.search_task_name_status(params[:search][:task_name],params[:search][:status]) if params[:search][:task_name].present? && params[:search][:status].present?
       @tasks = Task.search_task_name(params[:search][:task_name]) if params[:search][:task_name].present? && params[:search][:status].blank?
       @tasks = Task.search_status(params[:search][:status]) if params[:search][:task_name].blank? && params[:search][:status].present?
+      @tasks = @tasks.joins(:labels).where(labels: {id: params[:search][:label_id]}) if params[:search][:label_id].present?
     end
+
 
     if params[:sort_deadline]
       @tasks = @tasks.order(deadline: "DESC")
@@ -16,9 +18,7 @@ class TasksController < ApplicationController
     else
       @tasks = @tasks.order(created_at: "DESC")
     end
-
     @tasks = @tasks.page(params[:page]).per(5)
-
   end
 
   def new
@@ -59,6 +59,6 @@ class TasksController < ApplicationController
   end
 
   def tasks_params
-    params.require(:task).permit(:task_name, :content, :deadline, :status, :priority, :user_id)
+    params.require(:task).permit(:task_name, :content, :deadline, :status, :priority, :user_id, { label_ids: [] })
   end
 end
